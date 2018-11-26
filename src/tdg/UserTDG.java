@@ -3,43 +3,20 @@
  * SOEN 387
  */
 
-package rdg;
+package tdg;
 
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
-
-import com.google.gson.annotations.SerializedName;
 
 import services.DatabaseManager;
 
-public class UserRDG extends AbstractRDG {
+public class UserTDG extends AbstractTDG {
 	private static final String tableName = "Users";
 	private static int nextID = 0;
-	
-	@SerializedName("user")
-	private String username;
-	
-	private transient String password;
-	
-
-	public UserRDG(int id, String username, String password) {
-		super(id);
-		this.username = username;
-		this.password = hashPassword(password);
-	}
-	
-	// Used for reading records from the database. Version is not necessarily 1.
-	private UserRDG(int id, int version, String username, String password) {
-		super(id, version);
-		this.username = username;
-		this.password = hashPassword(password);
-	}
 	
 	public static void createTable() {
 		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
@@ -60,15 +37,15 @@ public class UserRDG extends AbstractRDG {
 		dropTable(tableName);
 	}
 
-	public int insert() {
+	public static int insert(int id, int version, String username, String password) {
 		String query = "INSERT INTO " + tableName + " (id, version, username, password) VALUES (?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
-			ps.setInt(2, getVersion());
+			ps.setInt(1, id);
+			ps.setInt(2, version);
 			ps.setString(3, username);
 			ps.setString(4, hashPassword(password));
 			
@@ -90,26 +67,22 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int update() {
+	public static int update(int id, int version, String username, String password) {
 		String query = "UPDATE " + tableName + " SET version = ?, username = ?, password = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getVersion() +1);
+			ps.setInt(1, version +1);
 			ps.setString(2, username);
 			ps.setString(3, hashPassword(password));
-			ps.setInt(4, getId());
-			ps.setInt(5, getVersion());
+			ps.setInt(4, id);
+			ps.setInt(5, version);
 			
 			output = ps.executeUpdate();
 			
 			ps.close();
-			
-			if(output == 1) {
-				incrementVersion();
-			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -125,14 +98,14 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int delete() {
+	public static int delete(int id) {
 		String query = "DELETE FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
+			ps.setInt(1, id);
 			
 			output = ps.executeUpdate();
 			
@@ -152,20 +125,16 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static UserRDG find(int id) {
+	public static ResultSet find(int id) {
 		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		UserRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, id);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = new UserRDG(rs.getInt("id"), rs.getInt("version"), rs.getString("username"), rs.getString("password"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -183,20 +152,16 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 
-	public static UserRDG find(String username) {
+	public static ResultSet find(String username) {
 		String query = "SELECT * FROM " + tableName + " WHERE username = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		UserRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, username);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-				output = new UserRDG(rs.getInt("id"), rs.getInt("version"), rs.getString("username"), rs.getString("password"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -214,21 +179,17 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static UserRDG find(String username, String password) {
+	public static ResultSet find(String username, String password) {
 		String query = "SELECT * FROM " + tableName + " WHERE username = ? AND password = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		UserRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, username);
 			ps.setString(2, hashPassword(password));
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-				output = new UserRDG(rs.getInt("id"), rs.getInt("version"), rs.getString("username"), rs.getString("password"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -246,19 +207,15 @@ public class UserRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static List<UserRDG> findAll() {
+	public static ResultSet findAll() {
 		String query = "SELECT * FROM " + tableName + ";";
 		Connection conn = DatabaseManager.getConnection();
-		List<UserRDG> output = new ArrayList<>();
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output.add(new UserRDG(rs.getInt("id"), rs.getInt("version"), rs.getString("username"), rs.getString("password")));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -280,22 +237,6 @@ public class UserRDG extends AbstractRDG {
 		nextID = getNextID(tableName, nextID);
 		
 		return nextID;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = hashPassword(password);
 	}
 	
 	/*

@@ -34,14 +34,14 @@ public class Register extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 		}
 		else {
-			UserRDG u = UserRDG.find(user);
+			UserTDG u = UserTDG.find(user);
 			
 			if(u != null) {
 				request.setAttribute("message", "That user has already registered.");
 				request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 				}
 			else {
-				u = new UserRDG(UserRDG.getNextUserID(), user, pass);
+				u = new UserTDG(UserTDG.getNextUserID(), user, pass);
 				u.insert();
 				int id = u.getId();
 				request.getSession(true).setAttribute("userID", id);

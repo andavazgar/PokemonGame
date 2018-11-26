@@ -36,7 +36,7 @@ public class RefuseChallenge extends HttpServlet {
 		
 		int userID = (int) request.getSession(true).getAttribute("userID");
 		int challengeID = Integer.parseInt(request.getParameter("challenge"));
-		ChallengeRDG challenge = ChallengeRDG.find(challengeID);
+		ChallengeTDG challenge = ChallengeTDG.find(challengeID);
 		
 		if(challenge == null) {
 			request.setAttribute("message", "The challenge provided was not found.");

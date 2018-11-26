@@ -3,33 +3,18 @@
  * SOEN 387
  */
 
-package rdg;
+package tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import services.DatabaseManager;
 
-public class DeckRDG extends AbstractRDG {
-	private static final int numberOfCardsNeeded = 40;
+public class DeckTDG extends AbstractTDG {
 	private static final String tableName = "Decks";
 	private static int nextID = 0;
-	private int userID;
-	
-
-	public DeckRDG(int id, int userID) {
-		super(id);
-		this.userID = userID;
-	}
-	
-	public DeckRDG(int id, int version, int userID) {
-		super(id, version);
-		this.userID = userID;
-	}
 	
 	public static void createTable() {
 		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
@@ -50,15 +35,15 @@ public class DeckRDG extends AbstractRDG {
 		dropTable(tableName);
 	}
 
-	public int insert() {
+	public static int insert(int id, int version, int userID) {
 		String query = "INSERT INTO " + tableName + " (id, version, user_id) VALUES (?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
-			ps.setInt(2, getVersion());
+			ps.setInt(1, id);
+			ps.setInt(2, version);
 			ps.setInt(3, userID);
 			
 			output = ps.executeUpdate();
@@ -79,19 +64,11 @@ public class DeckRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int insertDeckCards(List<CardRDG> cards) {
+	public static int insertDeckCards(String deckCardsValues) {
 		String query = "INSERT INTO Cards (id, version, deck_id, deck_position, card_type, card_name) VALUES ";
-		List<String> cardsStringList = new ArrayList<>();
-		String cardsString;
 		int output = 0;
 		
-		for(CardRDG card: cards) {
-			cardsStringList.add(card.valuesAsString());
-		}
-		
-		cardsString = String.join(", ", cardsStringList);
-		
-		query = query + cardsString + ";";
+		query = query + deckCardsValues + ";";
 		
 		Connection conn = DatabaseManager.getConnection();
 		
@@ -115,20 +92,16 @@ public class DeckRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static DeckRDG find(int id) {
+	public static ResultSet find(int id) {
 		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		DeckRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, id);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = new DeckRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("user_id"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -146,20 +119,16 @@ public class DeckRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static DeckRDG findByUserID(int userID) {
+	public static ResultSet findByUserID(int userID) {
 		String query = "SELECT * FROM " + tableName + " WHERE user_id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		DeckRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, userID);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = new DeckRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("user_id"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -182,9 +151,5 @@ public class DeckRDG extends AbstractRDG {
 		nextID = getNextID(tableName, nextID);
 		
 		return nextID;
-	}
-
-	public static int getNumberOfCardsNeeded() {
-		return numberOfCardsNeeded;
 	}
 }

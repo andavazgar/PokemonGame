@@ -35,7 +35,7 @@ public class ListChallenges extends HttpServlet {
 			return;
 		}
 		
-		List<ChallengeRDG> challenges = ChallengeRDG.findAll();
+		List<ChallengeTDG> challenges = ChallengeTDG.findAll();
 		JSONObject jsonObj = new JSONObject();
 		
 		jsonObj.put("challenges", challenges);

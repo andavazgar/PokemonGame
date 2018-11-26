@@ -35,7 +35,7 @@ public class Login extends HttpServlet {
 		String user = request.getParameter("user");
 		String pass = request.getParameter("pass");
 
-		UserRDG u = UserRDG.find(user, pass);
+		UserTDG u = UserTDG.find(user, pass);
 		if(u == null) {
 			request.setAttribute("message", "I do not recognize that username and password combination.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);

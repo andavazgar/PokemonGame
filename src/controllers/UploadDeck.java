@@ -67,21 +67,21 @@ public class UploadDeck extends HttpServlet {
 			}
 		}
 		
-		if(tempCards.size() != DeckRDG.getNumberOfCardsNeeded()) {
+		if(tempCards.size() != DeckTDG.getNumberOfCardsNeeded()) {
 			request.setAttribute("message", "The deck is not properly formatted.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 			return;
 		}
 		
-		DeckRDG deck = new DeckRDG(DeckRDG.getNextDeckID(), userID);
+		DeckTDG deck = new DeckTDG(DeckTDG.getNextDeckID(), userID);
 		deck.insert();
 		
 		int deckID = deck.getId();
-		List<CardRDG> cards = new ArrayList<>();
+		List<CardTDG> cards = new ArrayList<>();
 		int deckPosition = 1;
 		
 		for(TempCard tcard: tempCards) {
-			cards.add(new CardRDG(CardRDG.getNextCardID(), deckID, deckPosition, tcard.getCardType(), tcard.getCardName()));
+			cards.add(new CardTDG(CardTDG.getNextCardID(), deckID, deckPosition, tcard.getCardType(), tcard.getCardName()));
 			
 			deckPosition++;
 		}

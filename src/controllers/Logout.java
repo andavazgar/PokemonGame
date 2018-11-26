@@ -33,7 +33,7 @@ public class Logout extends HttpServlet {
 		}
 		
 		int id = (int) request.getSession(true).getAttribute("userID");
-		UserRDG user = UserRDG.find(id);
+		UserTDG user = UserTDG.find(id);
 		
 		if(user == null) {
 			request.setAttribute("message", "User ID was not found.");

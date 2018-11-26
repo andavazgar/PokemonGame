@@ -61,10 +61,10 @@ public class DrawCard extends HttpServlet {
 			return;
 		}
 		
-		int deckPosition = PlayingCardRDG.findDrawCardPosition(gameID, userID);	
-		CardRDG cardDrawn = CardRDG.findCardByDeckPosition(deckID, deckPosition);
+		int deckPosition = PlayingCardTDG.findDrawCardPosition(gameID, userID);	
+		CardTDG cardDrawn = CardTDG.findCardByDeckPosition(deckID, deckPosition);
 		
-		PlayingCardRDG playingCard = new PlayingCardRDG(gameID, userID, cardDrawn);
+		PlayingCardTDG playingCard = new PlayingCardTDG(gameID, userID, cardDrawn);
 		playingCard.insert();
 		
 		request.setAttribute("message", "Card succefully drawn.");

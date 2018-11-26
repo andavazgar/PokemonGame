@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package rdg;
+package tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,20 +13,7 @@ import java.sql.SQLException;
 import services.DatabaseManager;
 
 
-public abstract class AbstractRDG {
-	private int id;
-	private transient int version;
-	
-	
-	public AbstractRDG(int id) {
-		this.id = id;
-		this.version = 1;
-	}
-	
-	public AbstractRDG(int id, int version) {
-		this.id = id;
-		this.version = version;
-	}
+public abstract class AbstractTDG {
 	
 	protected static void createTable(String tableName, String query) {
     	Connection connection = DatabaseManager.getConnection();
@@ -128,25 +115,5 @@ public abstract class AbstractRDG {
 		}
 		
 		return ++nextID;
-	}
-	
-	
-	
-	/*	Getters and Setters	*/
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-	
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	
-	public void incrementVersion() {
-		version++;
 	}
 }

@@ -3,42 +3,19 @@
  * SOEN 387
  */
 
-package rdg;
+package tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import services.DatabaseManager;
 
-public class GameRDG extends AbstractRDG {
+public class GameTDG extends AbstractTDG {
 	private static final String tableName = "Games";
 	private static int nextID = 0;
-	private int challengeID;
-	private int challengerStatus;
-	private int challengeeStatus;
-	private int gameStatus;
 	
-	
-	public GameRDG(int id, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
-		super(id);
-		this.challengeID = challengeID;
-		this.challengerStatus = challengerStatus;
-		this.challengeeStatus = challengeeStatus;
-		this.gameStatus = gameStatus;
-	}
-	
-	public GameRDG(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
-		super(id, version);
-		this.challengeID = challengeID;
-		this.challengerStatus = challengerStatus;
-		this.challengeeStatus = challengeeStatus;
-		this.gameStatus = gameStatus;
-	}
-
 	public static void createTable() {
 		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
 							"id INT," +
@@ -61,15 +38,15 @@ public class GameRDG extends AbstractRDG {
 		dropTable(tableName);
 	}
 	
-	public int insert() {
+	public static int insert(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
 		String query = "INSERT INTO " + tableName + " (id, version, challenge_id, challenger_status, challengee_status, game_status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
-			ps.setInt(2, getVersion());
+			ps.setInt(1, id);
+			ps.setInt(2, version);
 			ps.setInt(3, challengeID);
 			ps.setInt(4, challengerStatus);
 			ps.setInt(5, challengeeStatus);
@@ -93,28 +70,24 @@ public class GameRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int update() {
+	public static int update(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
 		String query = "UPDATE " + tableName + " SET version = ?, challenge_id = ?, challenger_status = ?, challengee_status = ?, game_status WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getVersion() +1);
+			ps.setInt(1, version +1);
 			ps.setInt(2, challengeID);
 			ps.setInt(3, challengerStatus);
 			ps.setInt(4, challengeeStatus);
 			ps.setInt(5, gameStatus);
-			ps.setInt(6, getId());
-			ps.setInt(7, getVersion());
+			ps.setInt(6, id);
+			ps.setInt(7, version);
 			
 			output = ps.executeUpdate();
 			
 			ps.close();
-			
-			if(output == 1) {
-				incrementVersion();
-			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -130,14 +103,14 @@ public class GameRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int delete() {
+	public static int delete(int id) {
 		String query = "DELETE FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
+			ps.setInt(1, id);
 			
 			output = ps.executeUpdate();
 			
@@ -157,20 +130,16 @@ public class GameRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static GameRDG find(int id) {
+	public static ResultSet find(int id) {
 		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		GameRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, id);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = new GameRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("challenge_id"), rs.getInt("challenger_status"), rs.getInt("challengee_status"), rs.getInt("game_status"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -188,19 +157,15 @@ public class GameRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static List<GameRDG> findAll() {
+	public static ResultSet findAll() {
 		String query = "SELECT * FROM " + tableName + ";";
 		Connection conn = DatabaseManager.getConnection();
-		List<GameRDG> output = new ArrayList<>();
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-				output.add(new GameRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("challenge_id"), rs.getInt("challenger_status"), rs.getInt("challengee_status"), rs.getInt("game_status")));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -222,37 +187,5 @@ public class GameRDG extends AbstractRDG {
 		nextID = getNextID(tableName, nextID);
 		
 		return nextID;
-	}
-
-	public int getChallengeID() {
-		return challengeID;
-	}
-
-	public void setChallengeID(int challengeID) {
-		this.challengeID = challengeID;
-	}
-
-	public int getChallengerStatus() {
-		return challengerStatus;
-	}
-
-	public void setChallengerStatus(int challengerStatus) {
-		this.challengerStatus = challengerStatus;
-	}
-
-	public int getChallengeeStatus() {
-		return challengeeStatus;
-	}
-
-	public void setChallengeeStatus(int challengeeStatus) {
-		this.challengeeStatus = challengeeStatus;
-	}
-
-	public int getGameStatus() {
-		return gameStatus;
-	}
-
-	public void setGameStatus(int gameStatus) {
-		this.gameStatus = gameStatus;
 	}
 }

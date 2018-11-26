@@ -35,7 +35,7 @@ public class ListPlayers extends HttpServlet {
 			return;
 		}
 		
-		List<UserRDG> users = UserRDG.findAll();
+		List<UserTDG> users = UserTDG.findAll();
 		JSONObject jsonObj = new JSONObject();
 		
 		jsonObj.put("players", users);

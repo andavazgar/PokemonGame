@@ -54,7 +54,7 @@ public class PlayerInGameStatus {
 		Connection conn = DatabaseManager.getConnection();
 		PlayerInGameStatus output = null;
 		List<Integer> hand = new ArrayList<>();
-		int deckSize = DeckRDG.getNumberOfCardsNeeded();
+		int deckSize = DeckTDG.getNumberOfCardsNeeded();
 		int discardSize = 0;
 		List<Integer> bench = new ArrayList<>();
 		

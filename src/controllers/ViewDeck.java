@@ -38,7 +38,7 @@ public class ViewDeck extends HttpServlet {
 		}
 		
 		int userID = (int) request.getSession(true).getAttribute("userID");
-		DeckRDG deck = DeckRDG.findByUserID(userID);
+		DeckTDG deck = DeckTDG.findByUserID(userID);
 		
 		if(deck == null) {
 			request.setAttribute("message", "You need to upload a deck in order to view it.");
@@ -48,7 +48,7 @@ public class ViewDeck extends HttpServlet {
 		else {
 			JSONObject jsonObj = new JSONObject();
 			JSONObject innerJSONObj = new JSONObject();
-			List<CardRDG> deckCards = CardRDG.findCardsForUserID(userID);
+			List<CardTDG> deckCards = CardTDG.findCardsForUserID(userID);
 			int deckID = deckCards.get(0).getDeckID();
 			
 			innerJSONObj.put("id", deckID);

@@ -3,50 +3,19 @@
  * SOEN 387
  */
 
-package rdg;
+package tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import models.enums.CardStatus;
 import services.DatabaseManager;
 
-public class PlayingCardRDG extends AbstractRDG {
+public class PlayingCardTDG extends AbstractTDG {
 	private static final String tableName = "PlayingCards";
 	private static int nextID = 0;
-	private int gameID;
-	private int playerID;
-	private int cardID;
-	private int cardStatus;
-	
-	
-	public PlayingCardRDG(int id, int gameID, int playerID, int cardID, int cardStatus) {
-		super(id);
-		this.gameID = gameID;
-		this.playerID = playerID;
-		this.cardID = cardID;
-		this.cardStatus = cardStatus;
-	}
-	
-	public PlayingCardRDG(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
-		super(id, version);
-		this.gameID = gameID;
-		this.playerID = playerID;
-		this.cardID = cardID;
-		this.cardStatus = cardStatus;
-	}
-	
-	public PlayingCardRDG(int gameID, int playerID, CardRDG card) {
-		super(card.getId(), card.getVersion());
-		this.gameID = gameID;
-		this.playerID = playerID;
-		this.cardID = card.getId();
-		this.cardStatus = CardStatus.hand.ordinal();
-	}
 	
 	public static void createTable() {
 		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
@@ -72,15 +41,15 @@ public class PlayingCardRDG extends AbstractRDG {
 		dropTable(tableName);
 	}
 	
-	public int insert() {
+	public static int insert(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
 		String query = "INSERT INTO " + tableName + " (id, version, game_id, player_id, card_id, card_status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
-			ps.setInt(2, getVersion());
+			ps.setInt(1, id);
+			ps.setInt(2, version);
 			ps.setInt(3, gameID);
 			ps.setInt(4, playerID);
 			ps.setInt(5, cardID);
@@ -104,28 +73,24 @@ public class PlayingCardRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int update() {
+	public static int update(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
 		String query = "UPDATE " + tableName + " SET version = ?, game_id = ?, player_id = ?, card_id = ?, card_status = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getVersion() +1);
+			ps.setInt(1, version +1);
 			ps.setInt(2, gameID);
 			ps.setInt(3, playerID);
 			ps.setInt(4, cardID);
 			ps.setInt(5, cardStatus);
-			ps.setInt(6, getId());
-			ps.setInt(7, getVersion());
+			ps.setInt(6, id);
+			ps.setInt(7, version);
 			
 			output = ps.executeUpdate();
 			
 			ps.close();
-			
-			if(output == 1) {
-				incrementVersion();
-			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -141,14 +106,14 @@ public class PlayingCardRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public int delete() {
+	public static int delete(int id) {
 		String query = "DELETE FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, getId());
+			ps.setInt(1, id);
 			
 			output = ps.executeUpdate();
 			
@@ -168,10 +133,10 @@ public class PlayingCardRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static PlayingCardRDG find(int gameID, int playerID, int cardID) {
+	public static ResultSet find(int gameID, int playerID, int cardID) {
 		String query = "SELECT * FROM " + tableName + " WHERE game_id = ? AND player_id = ? AND card_id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		PlayingCardRDG output = null;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -179,11 +144,7 @@ public class PlayingCardRDG extends AbstractRDG {
 			ps.setInt(2, playerID);
 			ps.setInt(3, cardID);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = new PlayingCardRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("game_id"), rs.getInt("player_id"), rs.getInt("card_id"), rs.getInt("card_status"));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -201,10 +162,10 @@ public class PlayingCardRDG extends AbstractRDG {
 		return output;
 	}
 	
-	public static List<PlayingCardRDG> findCardsByStatus(int gameID, int playerID, CardStatus cardStatus) {
+	public static ResultSet findCardsByStatus(int gameID, int playerID, CardStatus cardStatus) {
 		String query = "SELECT * FROM " + tableName + " WHERE game_id = ? AND player_id = ? AND card_status = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		List<PlayingCardRDG> output = new ArrayList<>();
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -212,11 +173,7 @@ public class PlayingCardRDG extends AbstractRDG {
 			ps.setInt(2, playerID);
 			ps.setInt(3, cardStatus.ordinal());
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output.add(new PlayingCardRDG(rs.getInt("id"), rs.getInt("version"), rs.getInt("game_id"), rs.getInt("player_id"), rs.getInt("card_id"), rs.getInt("card_status")));
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}
@@ -270,37 +227,5 @@ public class PlayingCardRDG extends AbstractRDG {
 		nextID = getNextID(tableName, nextID);
 		
 		return nextID;
-	}
-	
-	public int getGameID() {
-		return gameID;
-	}
-
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
-
-	public int getPlayerID() {
-		return playerID;
-	}
-
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
-	}
-
-	public int getCardID() {
-		return cardID;
-	}
-
-	public void setCardID(int cardID) {
-		this.cardID = cardID;
-	}
-
-	public int getCardStatus() {
-		return cardStatus;
-	}
-	
-	public void setCardStatus(CardStatus cardStatus) {
-		this.cardStatus = cardStatus.ordinal();
 	}
 }

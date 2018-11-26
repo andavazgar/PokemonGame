@@ -155,8 +155,8 @@ public class GameDetails {
 		return output;
 	}
 	
-	public GameRDG getGameRDG() {
-		GameRDG game = new GameRDG(id, version, challengeID, challengerStatus, challengeeStatus);
+	public GameTDG getGameRDG() {
+		GameTDG game = new GameTDG(id, version, challengeID, challengerStatus, challengeeStatus);
 		
 		return game;
 	}

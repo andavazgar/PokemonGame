@@ -6,12 +6,12 @@
 package setup;
 
 import models.GameDetails;
-import rdg.CardRDG;
-import rdg.ChallengeRDG;
-import rdg.DeckRDG;
-import rdg.GameRDG;
-import rdg.PlayingCardRDG;
-import rdg.UserRDG;
+import tdg.CardTDG;
+import tdg.ChallengeTDG;
+import tdg.DeckTDG;
+import tdg.GameTDG;
+import tdg.PlayingCardTDG;
+import tdg.UserTDG;
 
 public class DatabaseSetup {
 	
@@ -24,21 +24,21 @@ public class DatabaseSetup {
 		
 		System.out.println("\nDropping tables ...");
 		
-		PlayingCardRDG.dropTable();
-		GameRDG.dropTable();
-		CardRDG.dropTable();
-		ChallengeRDG.dropTable();
-		DeckRDG.dropTable();
-		UserRDG.dropTable();
+		PlayingCardTDG.dropTable();
+		GameTDG.dropTable();
+		CardTDG.dropTable();
+		ChallengeTDG.dropTable();
+		DeckTDG.dropTable();
+		UserTDG.dropTable();
 		
 		System.out.println("\nCreating tables ...");
 		
-		UserRDG.createTable();
-		DeckRDG.createTable();
-		ChallengeRDG.createTable();
-		CardRDG.createTable();
-		GameRDG.createTable();
-		PlayingCardRDG.createTable();
+		UserTDG.createTable();
+		DeckTDG.createTable();
+		ChallengeTDG.createTable();
+		CardTDG.createTable();
+		GameTDG.createTable();
+		PlayingCardTDG.createTable();
 		
 		System.out.println("\nCreating Views ...");
 		

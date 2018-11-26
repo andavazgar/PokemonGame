@@ -40,7 +40,7 @@ public class AcceptChallenge extends HttpServlet {
 		
 		int userID = (int) request.getSession(true).getAttribute("userID");
 		int challengeID = Integer.parseInt(request.getParameter("challenge"));
-		ChallengeRDG challenge = ChallengeRDG.find(challengeID);
+		ChallengeTDG challenge = ChallengeTDG.find(challengeID);
 		
 		if(challenge == null) {
 			request.setAttribute("message", "The challenge provided was not found.");
@@ -60,7 +60,7 @@ public class AcceptChallenge extends HttpServlet {
 			return;
 		}
 		
-		DeckRDG deck = DeckRDG.findByUserID(userID);
+		DeckTDG deck = DeckTDG.findByUserID(userID);
 		
 		if(deck == null) {
 			request.setAttribute("message", "You need to upload a deck before accepting a challenge.");
@@ -72,7 +72,7 @@ public class AcceptChallenge extends HttpServlet {
 		challenge.setStatus(ChallengeStatus.accepted);
 		challenge.update();
 		
-		GameRDG game = new GameRDG(GameRDG.getNextGameID(), challenge.getId(), PlayerStatus.playing.ordinal(), PlayerStatus.playing.ordinal(), GameStatus.inProgress.ordinal());
+		GameTDG game = new GameTDG(GameTDG.getNextGameID(), challenge.getId(), PlayerStatus.playing.ordinal(), PlayerStatus.playing.ordinal(), GameStatus.inProgress.ordinal());
 		game.insert();
 		
 		request.setAttribute("message", "Challenge was successfully accepted. A new game was created with id: " + game.getId());

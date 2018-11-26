@@ -56,7 +56,7 @@ public class Retire extends HttpServlet {
 			return;
 		}
 		
-		GameRDG game = GameRDG.find(gameID);
+		GameTDG game = GameTDG.find(gameID);
 		
 		if(board.getPlayers()[0] == userID) {
 			// The challenger retired

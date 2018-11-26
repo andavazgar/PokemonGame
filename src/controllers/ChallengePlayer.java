@@ -45,7 +45,7 @@ public class ChallengePlayer extends HttpServlet {
 			return;
 		}
 		
-		UserRDG challengee = UserRDG.find(challengeeID);
+		UserTDG challengee = UserTDG.find(challengeeID);
 		
 		if(challengee == null) {
 			request.setAttribute("message", "Invalid challengee ID.");
@@ -53,7 +53,7 @@ public class ChallengePlayer extends HttpServlet {
 			return;
 		}
 		
-		DeckRDG deck = DeckRDG.findByUserID(challengerID);
+		DeckTDG deck = DeckTDG.findByUserID(challengerID);
 		
 		if(deck == null) {
 			request.setAttribute("message", "You need to upload a deck before issuing a challenge.");
@@ -61,7 +61,7 @@ public class ChallengePlayer extends HttpServlet {
 			return;
 		}
 		
-		ChallengeRDG challenge = new ChallengeRDG(ChallengeRDG.getNextChallengeID(), challengerID, challengeeID, deck.getId(), ChallengeStatus.open.ordinal());
+		ChallengeTDG challenge = new ChallengeTDG(ChallengeTDG.getNextChallengeID(), challengerID, challengeeID, deck.getId(), ChallengeStatus.open.ordinal());
 		challenge.insert();
 		
 		request.setAttribute("message", "Challenge '" + challenge.getId() + "' has been successfully created");

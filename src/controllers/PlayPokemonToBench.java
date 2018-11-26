@@ -64,8 +64,8 @@ public class PlayPokemonToBench extends HttpServlet {
 			return;
 		}
 		
-		PlayingCardRDG playingCard = PlayingCardRDG.find(gameID, userID, cardID);
-		CardRDG cardDetails = CardRDG.find(cardID);
+		PlayingCardTDG playingCard = PlayingCardTDG.find(gameID, userID, cardID);
+		CardTDG cardDetails = CardTDG.find(cardID);
 		
 		if(playingCard == null) {
 			request.setAttribute("message", "Card not found. You cannot play this card to the bench.");
