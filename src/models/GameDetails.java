@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import rdg.GameRDG;
 import services.DatabaseManager;
 
 // This class is a VIEW. It is read-only.
@@ -155,11 +154,11 @@ public class GameDetails {
 		return output;
 	}
 	
-	public GameTDG getGameRDG() {
-		GameTDG game = new GameTDG(id, version, challengeID, challengerStatus, challengeeStatus);
-		
-		return game;
-	}
+//	public GameTDG getGameRDG() {
+//		GameTDG game = new GameTDG(id, version, challengeID, challengerStatus, challengeeStatus);
+//		
+//		return game;
+//	}
 
 	public int getId() {
 		return id;

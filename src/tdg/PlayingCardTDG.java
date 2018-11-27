@@ -191,21 +191,17 @@ public class PlayingCardTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int findDrawCardPosition(int gameID, int playerID) {
+	public static ResultSet findDrawCardPosition(int gameID, int playerID) {
 		String query = "SELECT COUNT(id) as deck_position FROM " + tableName + " WHERE game_id = ? AND player_id = ?;";
 		Connection conn = DatabaseManager.getConnection();
-		int output = 1;
+		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, gameID);
 			ps.setInt(2, playerID);
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-                output = rs.getInt("deck_position") + 1;
-            }
+			output = ps.executeQuery();
 			
 			ps.close();
 		}

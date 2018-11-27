@@ -14,8 +14,8 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+import domainModels.Deck;
 import models.enums.CardStatus;
-import rdg.DeckRDG;
 import services.DatabaseManager;
 
 public class PlayerInGameStatus {
@@ -54,7 +54,7 @@ public class PlayerInGameStatus {
 		Connection conn = DatabaseManager.getConnection();
 		PlayerInGameStatus output = null;
 		List<Integer> hand = new ArrayList<>();
-		int deckSize = DeckTDG.getNumberOfCardsNeeded();
+		int deckSize = Deck.getNumberOfCardsNeeded();
 		int discardSize = 0;
 		List<Integer> bench = new ArrayList<>();
 		

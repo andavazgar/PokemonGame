@@ -19,7 +19,7 @@ public class User {
 	
 	private transient String password;
 	
-	private User(int id, int version, String username, String password) {
+	public User(int id, int version, String username, String password) {
 		this.id = id;
 		this.version = version;
 		this.username = username;
