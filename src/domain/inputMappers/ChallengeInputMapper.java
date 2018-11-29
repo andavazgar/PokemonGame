@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.mappers;
+package domain.inputMappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,30 +12,8 @@ import java.util.List;
 
 import domain.models.Challenge;
 import services.finders.ChallengeFinder;
-import services.tdg.ChallengeTDG;
 
-public class ChallengeMapper {
-
-	public int insert(Challenge challenge) {
-		int output = 0;
-		output = ChallengeTDG.insert(challenge.getId(), challenge.getVersion(), challenge.getChallenger(), challenge.getChallengee(), challenge.getChallengerDeck(), challenge.getStatus());
-		
-		return output;
-	}
-	
-	public int update(Challenge challenge) {
-		int output = 0;
-		output = ChallengeTDG.update(challenge.getId(), challenge.getVersion(), challenge.getChallenger(), challenge.getChallengee(), challenge.getChallengerDeck(), challenge.getChallengeeDeck(), challenge.getStatus());
-		
-		return output;
-	}
-	
-	public int delete(Challenge challenge) {
-		int output = 0;
-		output = ChallengeTDG.delete(challenge.getId());
-		
-		return output;
-	}
+public class ChallengeInputMapper {
 	
 	public static Challenge find(int challengeID) {
 		ResultSet rs = ChallengeFinder.find(challengeID);

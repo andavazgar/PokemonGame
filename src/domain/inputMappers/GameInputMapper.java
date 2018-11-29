@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.mappers;
+package domain.inputMappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,30 +12,8 @@ import java.util.List;
 
 import domain.models.Game;
 import services.finders.GameFinder;
-import services.tdg.GameTDG;
 
-public class GameMapper {
-	
-	public int insert(Game game) {
-		int output = 0;
-		output = GameTDG.insert(game.getId(), game.getVersion(), game.getChallengeID(), game.getChallengerStatus(), game.getChallengeeStatus(), game.getGameStatus());
-		
-		return output;
-	}
-	
-	public int update(Game game) {
-		int output = 0;
-		output = GameTDG.update(game.getId(), game.getVersion(), game.getChallengeID(), game.getChallengerStatus(), game.getChallengeeStatus(), game.getGameStatus());
-		
-		return output;
-	}
-	
-	public int delete(Game game) {
-		int output = 0;
-		output = GameTDG.delete(game.getId());
-		
-		return output;
-	}
+public class GameInputMapper {
 	
 	public static Game find(int gameID) {
 		ResultSet rs = GameFinder.find(gameID);

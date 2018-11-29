@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.mappers;
+package domain.inputMappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,29 +12,8 @@ import java.util.List;
 
 import domain.models.User;
 import services.finders.UserFinder;
-import services.tdg.UserTDG;
 
-public class UserMapper {
-	public int insert(User user) {
-		int output = 0;
-		output = UserTDG.insert(user.getId(), user.getVersion(), user.getUsername(), user.getPassword());
-		
-		return output;
-	}
-	
-	public int update(User user) {
-		int output = 0;
-		output = UserTDG.update(user.getId(), user.getVersion(), user.getUsername(), user.getPassword());
-		
-		return output;
-	}
-	
-	public int delete(User user) {
-		int output = 0;
-		output = UserTDG.delete(user.getId());
-		
-		return output;
-	}
+public class UserInputMapper {
 	
 	public static User find(int id) {
 		ResultSet rs = UserFinder.find(id);

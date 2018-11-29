@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.mappers;
+package domain.inputMappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,16 +12,8 @@ import java.util.List;
 
 import domain.models.Card;
 import services.finders.CardFinder;
-import services.tdg.CardTDG;
 
-public class CardMapper {
-
-	public int insert(Card card) {
-		int output = 0;
-		output = CardTDG.insert(card.getId(), card.getVersion(), card.getDeckID(), card.getDeckPosition(), card.getCardType(), card.getCardName());
-		
-		return output;
-	}
+public class CardInputMapper {
 	
 	public static Card find(int cardID) {
 		ResultSet rs = CardFinder.find(cardID);

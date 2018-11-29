@@ -3,19 +3,16 @@
  * SOEN 387
  */
 
-package domain.mappers;
+package domain.outputMappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import domain.models.Card;
 import domain.models.Deck;
-import services.finders.DeckFinder;
 import services.tdg.DeckTDG;
 
-public class DeckMapper {
+public class DeckOutputMapper {
 
 	public static int insert(Deck deck) {
 		int output = 0;
@@ -41,36 +38,6 @@ public class DeckMapper {
 		cardsString = String.join(", ", cardsStringList);
 		
 		output = DeckTDG.insertDeckCards(cardsString);
-		
-		return output;
-	}
-	
-	public static Deck find(int id) {
-		ResultSet rs = DeckFinder.find(id);
-		Deck output = null;
-		
-		try {
-			while (rs.next()) {
-			    output = new Deck(rs.getInt("id"), rs.getInt("version"), rs.getInt("user_id"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return output;
-	}
-	
-	public static Deck findByUserID(int userID) {
-		ResultSet rs = DeckFinder.findByUserID(userID);
-		Deck output = null;
-		
-		try {
-			while (rs.next()) {
-			    output = new Deck(rs.getInt("id"), rs.getInt("version"), rs.getInt("user_id"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		
 		return output;
 	}
