@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.models.Card;
+import services.finders.CardFinder;
 import services.tdg.CardTDG;
 
 public class CardMapper {
@@ -23,7 +24,7 @@ public class CardMapper {
 	}
 	
 	public static Card find(int cardID) {
-		ResultSet rs = CardTDG.find(cardID);
+		ResultSet rs = CardFinder.find(cardID);
 		Card output = null;
 		
 		try {
@@ -38,7 +39,7 @@ public class CardMapper {
 	}
 	
 	public static Card findCardByDeckPosition(int deckID, int deckPosition) {
-		ResultSet rs = CardTDG.findCardByDeckPosition(deckID, deckPosition);
+		ResultSet rs = CardFinder.findCardByDeckPosition(deckID, deckPosition);
 		Card output = null;
 		
 		try {
@@ -53,7 +54,7 @@ public class CardMapper {
 	}
 	
 	public static List<Card> findCardsForUserID(int userID) {
-		ResultSet rs = CardTDG.findCardsForUserID(userID);
+		ResultSet rs = CardFinder.findCardsForUserID(userID);
 		List<Card> output = new ArrayList<>();
 		
 		try {

@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.models.Challenge;
+import services.finders.ChallengeFinder;
 import services.tdg.ChallengeTDG;
 
 public class ChallengeMapper {
@@ -37,7 +38,7 @@ public class ChallengeMapper {
 	}
 	
 	public static Challenge find(int challengeID) {
-		ResultSet rs = ChallengeTDG.find(challengeID);
+		ResultSet rs = ChallengeFinder.find(challengeID);
 		Challenge output = null;
 		
 		try {
@@ -52,7 +53,7 @@ public class ChallengeMapper {
 	}
 
 	public static List<Challenge> findOpenByChallenger(int challenger) {
-		ResultSet rs = ChallengeTDG.findOpenByChallenger(challenger);
+		ResultSet rs = ChallengeFinder.findOpenByChallenger(challenger);
 		List<Challenge> output = new ArrayList<>();
 		
 		try {
@@ -67,7 +68,7 @@ public class ChallengeMapper {
 	}
 	
 	public static List<Challenge> findOpenByChallengee(int challengee) {
-		ResultSet rs = ChallengeTDG.findOpenByChallengee(challengee);
+		ResultSet rs = ChallengeFinder.findOpenByChallengee(challengee);
 		List<Challenge> output = new ArrayList<>();
 		
 		try {
@@ -82,7 +83,7 @@ public class ChallengeMapper {
 	}
 	
 	public static List<Challenge> findAll() {
-		ResultSet rs = ChallengeTDG.findAll();
+		ResultSet rs = ChallengeFinder.findAll();
 		List<Challenge> output = new ArrayList<>();
 		
 		try {
@@ -97,7 +98,7 @@ public class ChallengeMapper {
 	}
 	
 	public static List<Challenge> findAllOpen() {
-		ResultSet rs = ChallengeTDG.findAllOpen();
+		ResultSet rs = ChallengeFinder.findAllOpen();
 		List<Challenge> output = new ArrayList<>();
 		
 		try {

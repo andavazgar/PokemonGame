@@ -7,11 +7,9 @@ package services.tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import domain.enums.ChallengeStatus;
 import services.DatabaseManager;
 
 public class ChallengeTDG extends AbstractTDG {
@@ -126,141 +124,6 @@ public class ChallengeTDG extends AbstractTDG {
 			ps.setInt(1, id);
 			
 			output = ps.executeUpdate();
-			
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return output;
-	}
-	
-	public static ResultSet find(int id) {
-		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
-		Connection conn = DatabaseManager.getConnection();
-		ResultSet output = null;
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			
-			output = ps.executeQuery();
-			
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return output;
-	}
-
-	public static ResultSet findOpenByChallenger(int challenger) {
-		String query = "SELECT * FROM " + tableName + " WHERE challenger = ?;";
-		Connection conn = DatabaseManager.getConnection();
-		ResultSet output = null;
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, challenger);
-			
-			output = ps.executeQuery();
-			
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return output;
-	}
-	
-	public static ResultSet findOpenByChallengee(int challengee) {
-		String query = "SELECT * FROM " + tableName + " WHERE challengee = ?;";
-		Connection conn = DatabaseManager.getConnection();
-		ResultSet output = null;
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, challengee);
-			
-			output = ps.executeQuery();
-			
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return output;
-	}
-	
-	public static ResultSet findAll() {
-		String query = "SELECT * FROM " + tableName + ";";
-		Connection conn = DatabaseManager.getConnection();
-		ResultSet output = null;
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement(query);
-			
-			output = ps.executeQuery();
-			
-			ps.close();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return output;
-	}
-	
-	public static ResultSet findAllOpen() {
-		int openStatus = ChallengeStatus.open.ordinal();
-		String query = "SELECT * FROM " + tableName + " WHERE status = ?;";
-		Connection conn = DatabaseManager.getConnection();
-		ResultSet output = null;
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, openStatus);
-			
-			output = ps.executeQuery();
 			
 			ps.close();
 		}

@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,6 +15,7 @@ import domain.models.Game;
 import domain.models.PlayingCard;
 import domain.enums.CardStatus;
 import services.DatabaseManager;
+import services.finders.PlayingCardFinder;
 import services.tdg.PlayingCardTDG;
 
 public class PlayingCardMapper {
@@ -41,7 +42,7 @@ public class PlayingCardMapper {
 	}
 	
 	public static PlayingCard find(int gameID, int playerID, int cardID) {
-		ResultSet rs = PlayingCardTDG.find(gameID, playerID, cardID);
+		ResultSet rs = PlayingCardFinder.find(gameID, playerID, cardID);
 		PlayingCard output = null;
 		
 		try {
@@ -56,7 +57,7 @@ public class PlayingCardMapper {
 	}
 	
 	public static List<PlayingCard> findCardsByStatus(Game game, int playerID, CardStatus cardStatus) {
-		ResultSet rs = PlayingCardTDG.findCardsByStatus(game.getId(), playerID, cardStatus);
+		ResultSet rs = PlayingCardFinder.findCardsByStatus(game.getId(), playerID, cardStatus);
 		List<PlayingCard> output = new ArrayList<>();
 		
 		try {
@@ -71,7 +72,7 @@ public class PlayingCardMapper {
 	}
 	
 	public static int findDrawCardPosition(Game game, int playerID) {
-		ResultSet rs = PlayingCardTDG.findDrawCardPosition(game.getId(), playerID);
+		ResultSet rs = PlayingCardFinder.findDrawCardPosition(game.getId(), playerID);
 		Connection conn = DatabaseManager.getConnection();
 		int output = 1;
 		

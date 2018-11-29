@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.models.User;
+import services.finders.UserFinder;
 import services.tdg.UserTDG;
 
 public class UserMapper {
@@ -36,7 +37,7 @@ public class UserMapper {
 	}
 	
 	public static User find(int id) {
-		ResultSet rs = UserTDG.find(id);
+		ResultSet rs = UserFinder.find(id);
 		User output = null;
 		
 		try {
@@ -51,7 +52,7 @@ public class UserMapper {
 	}
 
 	public static User find(String username) {
-		ResultSet rs = UserTDG.find(username);
+		ResultSet rs = UserFinder.find(username);
 		User output = null;
 		
 		try {
@@ -67,7 +68,7 @@ public class UserMapper {
 	}
 	
 	public static User find(String username, String password) {
-		ResultSet rs = UserTDG.find(username, password);
+		ResultSet rs = UserFinder.find(username, password);
 		User output = null;
 		
 		try {
@@ -83,7 +84,7 @@ public class UserMapper {
 	}
 	
 	public static List<User> findAll() {
-		ResultSet rs = UserTDG.findAll();
+		ResultSet rs = UserFinder.findAll();
 		List<User> output = new ArrayList<>();
 		
 		try {

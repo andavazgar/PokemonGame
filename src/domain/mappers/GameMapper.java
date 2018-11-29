@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.models.Game;
+import services.finders.GameFinder;
 import services.tdg.GameTDG;
 
 public class GameMapper {
@@ -37,7 +38,7 @@ public class GameMapper {
 	}
 	
 	public static Game find(int gameID) {
-		ResultSet rs = GameTDG.find(gameID);
+		ResultSet rs = GameFinder.find(gameID);
 		Game output = null;
 		
 		try {
@@ -52,7 +53,7 @@ public class GameMapper {
 	}
 	
 	public static List<Game> findAll() {
-		ResultSet rs = GameTDG.findAll();
+		ResultSet rs = GameFinder.findAll();
 		List<Game> output = new ArrayList<>();
 		
 		try {

@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.dataMappers;
+package domain.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import domain.models.Card;
 import domain.models.Deck;
+import services.finders.DeckFinder;
 import services.tdg.DeckTDG;
 
 public class DeckMapper {
@@ -45,7 +46,7 @@ public class DeckMapper {
 	}
 	
 	public static Deck find(int id) {
-		ResultSet rs = DeckTDG.find(id);
+		ResultSet rs = DeckFinder.find(id);
 		Deck output = null;
 		
 		try {
@@ -60,7 +61,7 @@ public class DeckMapper {
 	}
 	
 	public static Deck findByUserID(int userID) {
-		ResultSet rs = DeckTDG.findByUserID(userID);
+		ResultSet rs = DeckFinder.findByUserID(userID);
 		Deck output = null;
 		
 		try {
