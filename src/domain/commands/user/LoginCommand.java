@@ -1,9 +1,10 @@
-package org.soen387.dom.command.user;
+/*
+ * author: Andres Vazquez (#40007182)
+ * SOEN 387
+ */
 
-import java.sql.SQLException;
+package domain.commands.user;
 
-import org.dsrg.soenea.domain.DomainObjectCreationException;
-import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.ValidatorCommand;
 import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;

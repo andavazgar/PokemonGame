@@ -1,10 +1,13 @@
-package org.soen387.dom.command.user;
+/*
+ * author: Andres Vazquez (#40007182)
+ * SOEN 387
+ */
 
-import java.sql.SQLException;
+package domain.commands.user;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dsrg.soenea.domain.DomainObjectCreationException;
 import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.ValidatorCommand;
@@ -16,7 +19,8 @@ import org.dsrg.soenea.domain.role.impl.GuestRole;
 import org.dsrg.soenea.domain.user.IUser;
 import org.dsrg.soenea.domain.user.UserFactory;
 import org.dsrg.soenea.domain.user.mapper.UserInputMapper;
-import org.soen387.dom.model.role.RegisteredRole;
+
+import domain.roles.RegisteredRole;
 
 public class RegisterCommand extends ValidatorCommand {
 

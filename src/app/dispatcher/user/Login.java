@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import org.dsrg.soenea.application.servlet.dispatcher.Dispatcher;
 import org.dsrg.soenea.application.servlet.impl.RequestAttributes;
 import org.dsrg.soenea.domain.command.CommandException;
-import org.soen387.dom.command.user.LoginCommand;
+import domain.commands.user.LoginCommand;
 
 public class Login extends Dispatcher {
 
