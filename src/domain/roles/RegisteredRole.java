@@ -1,4 +1,4 @@
-package domain.models;
+package domain.roles;
 
 import org.dsrg.soenea.domain.role.IRole;
 import org.dsrg.soenea.domain.role.Role;
