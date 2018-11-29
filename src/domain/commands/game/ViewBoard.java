@@ -3,34 +3,33 @@
  * SOEN 387
  */
 
-package domain.commands;
+package domain.commands.game;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.GameDetails;
-import rdg.CardRDG;
-import rdg.PlayingCardRDG;
+import models.Board;
+import models.JSONObject;
 
 /**
- * Servlet implementation class DrawCard
+ * Servlet implementation class ViewBoard
  */
-@WebServlet("/DrawCard")
-public class DrawCard extends HttpServlet {
+@WebServlet("/ViewBoard")
+public class ViewBoard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	
-    public DrawCard() {
+    public ViewBoard() {
         super();
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession(true).getAttribute("userID") == null) {
-			request.setAttribute("message", "You need to be logged in to draw a card.");
+			request.setAttribute("message", "You need to be logged in to view the games.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 			return;
 		}
@@ -45,35 +44,25 @@ public class DrawCard extends HttpServlet {
 		}
 		
 		int gameID = Integer.parseInt(gameIDStr);
-		GameDetails gameDetails = GameDetails.find(gameID);
+		Board board = Board.findBoard(gameID);
 		
-		if(gameDetails == null) {
-			request.setAttribute("message", "The game ID provided was not found.");
+		int[] players = board.getPlayers();
+		
+		if(userID != players[0] && userID != players[1]) {
+			request.setAttribute("message", "You can only view boards from games you are part of.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 			return;
 		}
 		
-		Integer deckID = gameDetails.getDeckForPlayer(userID);
+		JSONObject jsonObj = new JSONObject();
 		
-		if(deckID == null) {
-			request.setAttribute("message", "A deck was not found to draw a card. You must be part of the game to draw a card.");
-			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
-			return;
-		}
+		jsonObj.put("board", board);
 		
-		int deckPosition = PlayingCardTDG.findDrawCardPosition(gameID, userID);	
-		CardTDG cardDrawn = CardTDG.findCardByDeckPosition(deckID, deckPosition);
-		
-		PlayingCardTDG playingCard = new PlayingCardTDG(gameID, userID, cardDrawn);
-		playingCard.insert();
-		
-		request.setAttribute("message", "Card succefully drawn.");
-		request.getRequestDispatcher("WEB-INF/jsp/success.jsp").forward(request, response);
-		
+		request.setAttribute("jsonObj", jsonObj.getJSON());
+		request.getRequestDispatcher("WEB-INF/jsp/outputJSON.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

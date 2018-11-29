@@ -3,10 +3,9 @@
  * SOEN 387
  */
 
-package domain.commands;
+package domain.commands.game;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,19 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Board;
-import models.enums.GameStatus;
-import models.enums.PlayerStatus;
-import rdg.GameRDG;
+import models.JSONObject;
+import models.PlayerInGameStatus;
 
 /**
- * Servlet implementation class Retire
+ * Servlet implementation class ViewHand
  */
-@WebServlet("/Retire")
-public class Retire extends HttpServlet {
+@WebServlet("/ViewHand")
+public class ViewHand extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	
-    public Retire() {
+    public ViewHand() {
         super();
     }
     
@@ -51,27 +49,18 @@ public class Retire extends HttpServlet {
 		int[] players = board.getPlayers();
 		
 		if(userID != players[0] && userID != players[1]) {
-			request.setAttribute("message", "You can only retire from a game you are part of.");
+			request.setAttribute("message", "You can only view your hand for the games you are part of.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 			return;
 		}
 		
-		GameTDG game = GameTDG.find(gameID);
+		PlayerInGameStatus playerStatus = board.getPlayStatusForPlayer(userID);
+		JSONObject jsonObj = new JSONObject();
 		
-		if(board.getPlayers()[0] == userID) {
-			// The challenger retired
-			game.setChallengerStatus(PlayerStatus.retired.ordinal());
-		}
-		else {
-			// The challengee retired
-			game.setChallengeeStatus(PlayerStatus.retired.ordinal());
-		}
+		jsonObj.put("hand", playerStatus.getHand());
 		
-		game.setGameStatus(GameStatus.finished.ordinal());
-		game.update();
-		
-		request.setAttribute("message", "You retired from the game. This game is now finished.");
-		request.getRequestDispatcher("WEB-INF/jsp/success.jsp").forward(request, response);
+		request.setAttribute("jsonObj", jsonObj.getJSON());
+		request.getRequestDispatcher("WEB-INF/jsp/outputJSON.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

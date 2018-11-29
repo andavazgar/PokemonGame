@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.commands;
+package domain.commands.game;
 
 import java.io.IOException;
 
@@ -14,16 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Board;
-import models.JSONObject;
+import models.enums.GameStatus;
+import models.enums.PlayerStatus;
+import rdg.GameRDG;
 
 /**
- * Servlet implementation class ViewBoard
+ * Servlet implementation class Retire
  */
-@WebServlet("/ViewBoard")
-public class ViewBoard extends HttpServlet {
+@WebServlet("/Retire")
+public class Retire extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-    public ViewBoard() {
+	
+    public Retire() {
         super();
     }
     
@@ -34,7 +37,6 @@ public class ViewBoard extends HttpServlet {
 			return;
 		}
 		
-		int userID = (int) request.getSession(true).getAttribute("userID");
 		String gameIDStr = request.getParameter("game");
 		
 		if(gameIDStr == null) {
@@ -43,26 +45,37 @@ public class ViewBoard extends HttpServlet {
 			return;
 		}
 		
+		int userID = (int) request.getSession(true).getAttribute("userID");
 		int gameID = Integer.parseInt(gameIDStr);
 		Board board = Board.findBoard(gameID);
-		
 		int[] players = board.getPlayers();
 		
 		if(userID != players[0] && userID != players[1]) {
-			request.setAttribute("message", "You can only view boards from games you are part of.");
+			request.setAttribute("message", "You can only retire from a game you are part of.");
 			request.getRequestDispatcher("WEB-INF/jsp/fail.jsp").forward(request, response);
 			return;
 		}
 		
-		JSONObject jsonObj = new JSONObject();
+		GameTDG game = GameTDG.find(gameID);
 		
-		jsonObj.put("board", board);
+		if(board.getPlayers()[0] == userID) {
+			// The challenger retired
+			game.setChallengerStatus(PlayerStatus.retired.ordinal());
+		}
+		else {
+			// The challengee retired
+			game.setChallengeeStatus(PlayerStatus.retired.ordinal());
+		}
 		
-		request.setAttribute("jsonObj", jsonObj.getJSON());
-		request.getRequestDispatcher("WEB-INF/jsp/outputJSON.jsp").forward(request, response);
+		game.setGameStatus(GameStatus.finished.ordinal());
+		game.update();
+		
+		request.setAttribute("message", "You retired from the game. This game is now finished.");
+		request.getRequestDispatcher("WEB-INF/jsp/success.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

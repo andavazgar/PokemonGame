@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.commands;
+package domain.commands.game;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

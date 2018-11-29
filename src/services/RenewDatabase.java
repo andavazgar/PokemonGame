@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package services.setup;
+package services;
 
 import app.PokemonFC;
 import domain.outputModels.GameDetails;

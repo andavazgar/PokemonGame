@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package domain.commands;
+package domain.commands.users;
 
 import java.io.IOException;
 import java.util.List;
