@@ -7,7 +7,6 @@ package services.tdg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import services.DatabaseManager;
@@ -86,34 +85,34 @@ public abstract class AbstractTDG {
     	}
     }
 	
-	public synchronized static int getNextID(String tableName, int nextID) {
-		if (nextID == 0) {
-			Connection conn = DatabaseManager.getConnection();
-			String query = "SELECT id FROM " + tableName + " ORDER BY id DESC LIMIT 1;";
-			
-			try {
-				PreparedStatement ps = conn.prepareStatement(query);
-				ResultSet rs = ps.executeQuery(query);
-				
-				while (rs.next()) {
-		            nextID = rs.getInt("id");
-				}
-				
-				ps.close();
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			
-		}
-		
-		return ++nextID;
-	}
+//	public synchronized static int getNextID(String tableName, int nextID) {
+//		if (nextID == 0) {
+//			Connection conn = DatabaseManager.getConnection();
+//			String query = "SELECT id FROM " + tableName + " ORDER BY id DESC LIMIT 1;";
+//			
+//			try {
+//				PreparedStatement ps = conn.prepareStatement(query);
+//				ResultSet rs = ps.executeQuery(query);
+//				
+//				while (rs.next()) {
+//		            nextID = rs.getInt("id");
+//				}
+//				
+//				ps.close();
+//			}
+//			catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			finally {
+//				try {
+//					conn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//		}
+//		
+//		return ++nextID;
+//	}
 }

@@ -5,39 +5,39 @@
 
 package services.tdg;
 
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Base64;
+
+import org.dsrg.soenea.service.UniqueIdFactory;
 
 import services.DatabaseManager;
+import services.UserHelper;
 
 public class UserTDG extends AbstractTDG {
-	private static final String tableName = "Users";
-	private static int nextID = 0;
+	private static final String TABLE_NAME = "Users";
 	
 	public static void createTable() {
-		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
+		String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
 							"id INT," +
 							"version INT NOT NULL," +
 							"username VARCHAR(255) NOT NULL UNIQUE," +
 							"password CHAR(44) NOT NULL," +
 							"PRIMARY KEY (id)" +
 						");";
-		createTable(tableName, query);
+		createTable(TABLE_NAME, query);
 	}
 	
 	public static void truncateTable() {
-		truncateTable(tableName);
+		truncateTable(TABLE_NAME);
 	}
 	
 	public static void dropTable() {
-		dropTable(tableName);
+		dropTable(TABLE_NAME);
 	}
 
 	public static int insert(int id, int version, String username, String password) {
-		String query = "INSERT INTO " + tableName + " (id, version, username, password) VALUES (?, ?, ?, ?);";
+		String query = "INSERT INTO " + TABLE_NAME + " (id, version, username, password) VALUES (?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -46,7 +46,7 @@ public class UserTDG extends AbstractTDG {
 			ps.setInt(1, id);
 			ps.setInt(2, version);
 			ps.setString(3, username);
-			ps.setString(4, hashPassword(password));
+			ps.setString(4, UserHelper.hashPassword(password));
 			
 			output = ps.executeUpdate();
 			
@@ -67,7 +67,7 @@ public class UserTDG extends AbstractTDG {
 	}
 	
 	public static int update(int id, int version, String username, String password) {
-		String query = "UPDATE " + tableName + " SET version = ?, username = ?, password = ? WHERE id = ? AND version = ?;";
+		String query = "UPDATE " + TABLE_NAME + " SET version = ?, username = ?, password = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -75,7 +75,7 @@ public class UserTDG extends AbstractTDG {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, version +1);
 			ps.setString(2, username);
-			ps.setString(3, hashPassword(password));
+			ps.setString(3, UserHelper.hashPassword(password));
 			ps.setInt(4, id);
 			ps.setInt(5, version);
 			
@@ -98,7 +98,7 @@ public class UserTDG extends AbstractTDG {
 	}
 	
 	public static int delete(int id) {
-		String query = "DELETE FROM " + tableName + " WHERE id = ?;";
+		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -124,32 +124,7 @@ public class UserTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int getNextUserID() {
-		nextID = getNextID(tableName, nextID);
-		
-		return nextID;
-	}
-	
-	/*
-	 * Source: https://stackoverflow.com/a/5531479
-	 */
-	private static String hashPassword(String password) {
-		if(password.length() == 44) {
-			return password;
-		}
-		else {
-			String hashedPassword = null;
-			
-			try {
-				MessageDigest digest = MessageDigest.getInstance("SHA-256");
-				byte[] hash = digest.digest(password.getBytes());
-				hashedPassword = Base64.getEncoder().encodeToString(hash);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return hashedPassword;
-		}
+	public static long getMaxId() throws SQLException {
+		return UniqueIdFactory.getMaxId(TABLE_NAME, "id");
 	}
 }

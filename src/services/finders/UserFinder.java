@@ -5,14 +5,13 @@
 
 package services.finders;
 
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Base64;
 
 import services.DatabaseManager;
+import services.UserHelper;
 
 public class UserFinder {
 	private static final String tableName = "Users";
@@ -79,7 +78,7 @@ public class UserFinder {
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, username);
-			ps.setString(2, hashPassword(password));
+			ps.setString(2, UserHelper.hashPassword(password));
 			
 			output = ps.executeQuery();
 			
@@ -123,28 +122,5 @@ public class UserFinder {
 		}
 		
 		return output;
-	}
-	
-	/*
-	 * Source: https://stackoverflow.com/a/5531479
-	 */
-	private static String hashPassword(String password) {
-		if(password.length() == 44) {
-			return password;
-		}
-		else {
-			String hashedPassword = null;
-			
-			try {
-				MessageDigest digest = MessageDigest.getInstance("SHA-256");
-				byte[] hash = digest.digest(password.getBytes());
-				hashedPassword = Base64.getEncoder().encodeToString(hash);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return hashedPassword;
-		}
 	}
 }

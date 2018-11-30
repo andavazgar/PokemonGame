@@ -10,14 +10,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.dsrg.soenea.service.UniqueIdFactory;
+
 import services.DatabaseManager;
 
 public class ChallengeTDG extends AbstractTDG {
-	private static final String tableName = "Challenges";
-	private static int nextID = 0;
+	private static final String TABLE_NAME = "Challenges";
 	
 	public static void createTable() {
-		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
+		String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
 							"id INT," +
 							"version INT NOT NULL," +
 							"challenger INT NOT NULL," +
@@ -31,19 +32,19 @@ public class ChallengeTDG extends AbstractTDG {
 							"FOREIGN KEY (challenger_deck) REFERENCES Decks(id)," +
 							"FOREIGN KEY (challengee_deck) REFERENCES Decks(id)" +
 						");";
-		createTable(tableName, query);
+		createTable(TABLE_NAME, query);
 	}
 	
 	public static void truncateTable() {
-		truncateTable(tableName);
+		truncateTable(TABLE_NAME);
 	}
 	
 	public static void dropTable() {
-		dropTable(tableName);
+		dropTable(TABLE_NAME);
 	}
 
 	public static int insert(int id, int version, int challenger, int challengee, int challengerDeck, int status) {
-		String query = "INSERT INTO " + tableName + " (id, version, challenger, challengee, challenger_deck, status) VALUES (?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO " + TABLE_NAME + " (id, version, challenger, challengee, challenger_deck, status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -75,7 +76,7 @@ public class ChallengeTDG extends AbstractTDG {
 	}
 	
 	public static int update(int id, int version, int challenger, int challengee, int challengerDeck, int challengeeDeck, int status) {
-		String query = "UPDATE " + tableName + " SET version = ?, challenger = ?, challengee = ?, challenger_deck = ?, challengee_deck = ?, status = ? WHERE id = ? AND version = ?;";
+		String query = "UPDATE " + TABLE_NAME + " SET version = ?, challenger = ?, challengee = ?, challenger_deck = ?, challengee_deck = ?, status = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -115,7 +116,7 @@ public class ChallengeTDG extends AbstractTDG {
 	}
 	
 	public static int delete(int id) {
-		String query = "DELETE FROM " + tableName + " WHERE id = ?;";
+		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -141,9 +142,7 @@ public class ChallengeTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int getNextChallengeID() {
-		nextID = getNextID(tableName, nextID);
-		
-		return nextID;
+	public static long getMaxId() throws SQLException {
+		return UniqueIdFactory.getMaxId(TABLE_NAME, "id");
 	}
 }

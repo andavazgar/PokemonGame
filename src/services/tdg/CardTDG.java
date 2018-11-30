@@ -9,14 +9,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.dsrg.soenea.service.UniqueIdFactory;
+
 import services.DatabaseManager;
 
 public final class CardTDG extends AbstractTDG {
-	private static final String tableName = "Cards";
-	private static int nextID = 0;
+	private static final String TABLE_NAME = "Cards";
 	
 	public static void createTable() {
-		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(" +
+		String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
 							"id INT," +
 							"version INT NOT NULL," +
 							"deck_id INT NOT NULL," +
@@ -26,19 +27,19 @@ public final class CardTDG extends AbstractTDG {
 							"PRIMARY KEY (id)," +
 							"FOREIGN KEY (deck_id) REFERENCES Decks(id)" +
 						");";
-		createTable(tableName, query);
+		createTable(TABLE_NAME, query);
 	}
 	
 	public static void truncateTable() {
-		truncateTable(tableName);
+		truncateTable(TABLE_NAME);
 	}
 	
 	public static void dropTable() {
-		dropTable(tableName);
+		dropTable(TABLE_NAME);
 	}
 
 	public static int insert(int id, int version, int deckID, int deckPosition, int cardType, String cardName) {
-		String query = "INSERT INTO " + tableName + " (id, version, deck_id, deck_position, card_type, card_name) VALUES (?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO " + TABLE_NAME + " (id, version, deck_id, deck_position, card_type, card_name) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
@@ -69,9 +70,7 @@ public final class CardTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int getNextCardID() {
-		nextID = getNextID(tableName, nextID);
-		
-		return nextID;
+	public static long getMaxId() throws SQLException {
+		return UniqueIdFactory.getMaxId(TABLE_NAME, "id");
 	}
 }
