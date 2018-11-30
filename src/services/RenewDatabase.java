@@ -5,7 +5,7 @@
 
 package services;
 
-import app.PokemonFC;
+import app.PokemonFrontController;
 import domain.outputModels.GameDetails;
 import services.tdg.UserTDG;
 import services.tdg.CardTDG;
@@ -17,7 +17,7 @@ import services.tdg.PlayingCardTDG;
 public class RenewDatabase {
 
 	public static void main(String[] args) {
-		PokemonFC.prepareDbRegistry("");
+		PokemonFrontController.prepareDbRegistry("");
 		
 		System.out.println("Dropping views ...");
 		GameDetails.dropView();

@@ -12,16 +12,16 @@ import javax.servlet.annotation.WebFilter;
 import org.dsrg.soenea.application.filter.PermalinkFilter;
 
 @WebFilter( 
-		urlPatterns="/Poke/*",
+		urlPatterns="/PokemonGame/*",
 		dispatcherTypes={DispatcherType.REQUEST}
 )
-public class PokeFilter extends PermalinkFilter {
+public class PokemonWebFilter extends PermalinkFilter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		
 		super.doFilter(request, response, chain);
-		request.getServletContext().getRequestDispatcher("/PokeServlet").include(request, response);
+		request.getServletContext().getRequestDispatcher("/PokemonFrontController").include(request, response);
 	}
 }

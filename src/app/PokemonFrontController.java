@@ -39,8 +39,8 @@ import org.dsrg.soenea.service.threadLocal.ThreadLocalTracker;
 import org.dsrg.soenea.uow.MapperFactory;
 import org.dsrg.soenea.uow.UoW;
 
-@WebServlet("/PokeServlet")
-public class PokemonFC extends Servlet {
+@WebServlet("/PokemonFrontController")
+public class PokemonFrontController extends Servlet {
 
 //	private static final Log log = LogFactory.getLog(SmartDispatcherServlet.class);
 	
