@@ -38,15 +38,15 @@ public final class CardTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 
-	public static int insert(int id, int version, int deckID, int deckPosition, int cardType, String cardName) {
+	public static int insert(long id, long version, int deckID, int deckPosition, int cardType, String cardName) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, deck_id, deck_position, card_type, card_name) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
 			ps.setInt(3, deckID);
 			ps.setInt(4, deckPosition);
 			ps.setInt(5, cardType);

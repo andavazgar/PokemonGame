@@ -17,7 +17,7 @@ import services.finders.PlayingCardFinder;
 
 public class PlayingCardInputMapper {
 	
-	public static PlayingCard find(int gameID, int playerID, int cardID) {
+	public static PlayingCard find(long gameID, long playerID, long cardID) {
 		ResultSet rs = PlayingCardFinder.find(gameID, playerID, cardID);
 		PlayingCard output = null;
 		
@@ -32,7 +32,7 @@ public class PlayingCardInputMapper {
 		return output;
 	}
 	
-	public static List<PlayingCard> findCardsByStatus(Game game, int playerID, CardStatus cardStatus) {
+	public static List<PlayingCard> findCardsByStatus(Game game, long playerID, CardStatus cardStatus) {
 		ResultSet rs = PlayingCardFinder.findCardsByStatus(game.getId(), playerID, cardStatus);
 		List<PlayingCard> output = new ArrayList<>();
 		
@@ -47,7 +47,7 @@ public class PlayingCardInputMapper {
 		return output;
 	}
 	
-	public static int findDrawCardPosition(Game game, int playerID) {
+	public static int findDrawCardPosition(Game game, long playerID) {
 		ResultSet rs = PlayingCardFinder.findDrawCardPosition(game.getId(), playerID);
 		int output = 1;
 		

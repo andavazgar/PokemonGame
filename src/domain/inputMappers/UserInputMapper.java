@@ -15,7 +15,7 @@ import services.finders.UserFinder;
 
 public class UserInputMapper {
 	
-	public static User find(int id) {
+	public static User find(long id) {
 		ResultSet rs = UserFinder.find(id);
 		User output = null;
 		

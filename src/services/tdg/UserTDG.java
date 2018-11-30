@@ -36,15 +36,15 @@ public class UserTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 
-	public static int insert(int id, int version, String username, String password) {
+	public static int insert(long id, long version, String username, String password) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, username, password) VALUES (?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
 			ps.setString(3, username);
 			ps.setString(4, UserHelper.hashPassword(password));
 			
@@ -66,18 +66,18 @@ public class UserTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int update(int id, int version, String username, String password) {
+	public static int update(long id, long version, String username, String password) {
 		String query = "UPDATE " + TABLE_NAME + " SET version = ?, username = ?, password = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, version +1);
+			ps.setLong(1, version +1);
 			ps.setString(2, username);
 			ps.setString(3, UserHelper.hashPassword(password));
-			ps.setInt(4, id);
-			ps.setInt(5, version);
+			ps.setLong(4, id);
+			ps.setLong(5, version);
 			
 			output = ps.executeUpdate();
 			
@@ -97,14 +97,14 @@ public class UserTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int delete(int id) {
+	public static int delete(long id) {
 		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeUpdate();
 			

@@ -43,18 +43,18 @@ public class ChallengeTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 
-	public static int insert(int id, int version, int challenger, int challengee, int challengerDeck, int status) {
+	public static int insert(long id, long version, long challenger, long challengee, long challengerDeck, int status) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, challenger, challengee, challenger_deck, status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
-			ps.setInt(3, challenger);
-			ps.setInt(4, challengee);
-			ps.setInt(5, challengerDeck);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
+			ps.setLong(3, challenger);
+			ps.setLong(4, challengee);
+			ps.setLong(5, challengerDeck);
 			ps.setInt(6, status);
 			
 			output = ps.executeUpdate();
@@ -75,27 +75,27 @@ public class ChallengeTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int update(int id, int version, int challenger, int challengee, int challengerDeck, int challengeeDeck, int status) {
+	public static int update(long id, long version, long challenger, long challengee, long challengerDeck, long challengeeDeck, int status) {
 		String query = "UPDATE " + TABLE_NAME + " SET version = ?, challenger = ?, challengee = ?, challenger_deck = ?, challengee_deck = ?, status = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, version +1);
-			ps.setInt(2, challenger);
-			ps.setInt(3, challengee);
-			ps.setInt(4, challengerDeck);
+			ps.setLong(1, version +1);
+			ps.setLong(2, challenger);
+			ps.setLong(3, challengee);
+			ps.setLong(4, challengerDeck);
 			
 			if(challengeeDeck != 0) {
-				ps.setInt(5, challengeeDeck);
+				ps.setLong(5, challengeeDeck);
 			}
 			else {
 				ps.setNull(5, Types.INTEGER);
 			}
 			ps.setInt(6, status);
-			ps.setInt(7, id);
-			ps.setInt(8, version);
+			ps.setLong(7, id);
+			ps.setLong(8, version);
 			
 			output = ps.executeUpdate();
 			
@@ -115,14 +115,14 @@ public class ChallengeTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int delete(int id) {
+	public static int delete(long id) {
 		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeUpdate();
 			

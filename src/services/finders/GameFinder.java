@@ -15,14 +15,14 @@ import services.DatabaseManager;
 public class GameFinder {
 	private static final String tableName = "Games";
 	
-	public static ResultSet find(int id) {
+	public static ResultSet find(long id) {
 		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeQuery();
 			

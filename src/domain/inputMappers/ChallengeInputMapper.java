@@ -15,7 +15,7 @@ import services.finders.ChallengeFinder;
 
 public class ChallengeInputMapper {
 	
-	public static Challenge find(int challengeID) {
+	public static Challenge find(long challengeID) {
 		ResultSet rs = ChallengeFinder.find(challengeID);
 		Challenge output = null;
 		
@@ -30,7 +30,7 @@ public class ChallengeInputMapper {
 		return output;
 	}
 
-	public static List<Challenge> findOpenByChallenger(int challenger) {
+	public static List<Challenge> findOpenByChallenger(long challenger) {
 		ResultSet rs = ChallengeFinder.findOpenByChallenger(challenger);
 		List<Challenge> output = new ArrayList<>();
 		
@@ -45,7 +45,7 @@ public class ChallengeInputMapper {
 		return output;
 	}
 	
-	public static List<Challenge> findOpenByChallengee(int challengee) {
+	public static List<Challenge> findOpenByChallengee(long challengee) {
 		ResultSet rs = ChallengeFinder.findOpenByChallengee(challengee);
 		List<Challenge> output = new ArrayList<>();
 		

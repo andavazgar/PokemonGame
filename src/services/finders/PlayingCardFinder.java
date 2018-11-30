@@ -16,16 +16,16 @@ import services.DatabaseManager;
 public class PlayingCardFinder {
 	private static final String tableName = "PlayingCards";
 	
-	public static ResultSet find(int gameID, int playerID, int cardID) {
+	public static ResultSet find(long gameID, long playerID, long cardID) {
 		String query = "SELECT * FROM " + tableName + " WHERE game_id = ? AND player_id = ? AND card_id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, gameID);
-			ps.setInt(2, playerID);
-			ps.setInt(3, cardID);
+			ps.setLong(1, gameID);
+			ps.setLong(2, playerID);
+			ps.setLong(3, cardID);
 			
 			output = ps.executeQuery();
 			
@@ -45,15 +45,15 @@ public class PlayingCardFinder {
 		return output;
 	}
 	
-	public static ResultSet findCardsByStatus(int gameID, int playerID, CardStatus cardStatus) {
+	public static ResultSet findCardsByStatus(long gameID, long playerID, CardStatus cardStatus) {
 		String query = "SELECT * FROM " + tableName + " WHERE game_id = ? AND player_id = ? AND card_status = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, gameID);
-			ps.setInt(2, playerID);
+			ps.setLong(1, gameID);
+			ps.setLong(2, playerID);
 			ps.setInt(3, cardStatus.ordinal());
 			
 			output = ps.executeQuery();
@@ -74,15 +74,15 @@ public class PlayingCardFinder {
 		return output;
 	}
 	
-	public static ResultSet findDrawCardPosition(int gameID, int playerID) {
+	public static ResultSet findDrawCardPosition(long gameID, long playerID) {
 		String query = "SELECT COUNT(id) as deck_position FROM " + tableName + " WHERE game_id = ? AND player_id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, gameID);
-			ps.setInt(2, playerID);
+			ps.setLong(1, gameID);
+			ps.setLong(2, playerID);
 			
 			output = ps.executeQuery();
 			

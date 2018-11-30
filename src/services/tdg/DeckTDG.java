@@ -35,15 +35,15 @@ public class DeckTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 
-	public static int insert(int id, int version, int userID) {
+	public static int insert(long id, long version, int userID) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, user_id) VALUES (?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
 			ps.setInt(3, userID);
 			
 			output = ps.executeUpdate();

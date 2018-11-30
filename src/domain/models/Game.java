@@ -5,40 +5,27 @@
 
 package domain.models;
 
-public class Game {
-	private int id;
-	private int version;
-	private int challengeID;
+import org.dsrg.soenea.domain.DomainObject;
+
+public class Game extends DomainObject<Long> {
+	private long challengeID;
 	private int challengerStatus;
 	private int challengeeStatus;
 	private int gameStatus;
 	
-	public Game(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
-		this.id = id;
-		this.version = version;
+	public Game(long id, long version, long challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
+		super(id, version);
 		this.challengeID = challengeID;
 		this.challengerStatus = challengerStatus;
 		this.challengeeStatus = challengeeStatus;
 		this.gameStatus = gameStatus;
 	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
-
-	public int getChallengeID() {
+	public long getChallengeID() {
 		return challengeID;
 	}
 
-	public void setChallengeID(int challengeID) {
+	public void setChallengeID(long challengeID) {
 		this.challengeID = challengeID;
 	}
 

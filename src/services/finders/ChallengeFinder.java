@@ -16,14 +16,14 @@ import services.DatabaseManager;
 public class ChallengeFinder {
 	private static final String tableName = "Challenges";
 	
-	public static ResultSet find(int id) {
+	public static ResultSet find(long id) {
 		String query = "SELECT * FROM " + tableName + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeQuery();
 			
@@ -43,14 +43,14 @@ public class ChallengeFinder {
 		return output;
 	}
 
-	public static ResultSet findOpenByChallenger(int challenger) {
+	public static ResultSet findOpenByChallenger(long challenger) {
 		String query = "SELECT * FROM " + tableName + " WHERE challenger = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, challenger);
+			ps.setLong(1, challenger);
 			
 			output = ps.executeQuery();
 			
@@ -70,14 +70,14 @@ public class ChallengeFinder {
 		return output;
 	}
 	
-	public static ResultSet findOpenByChallengee(int challengee) {
+	public static ResultSet findOpenByChallengee(long challengee) {
 		String query = "SELECT * FROM " + tableName + " WHERE challengee = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		ResultSet output = null;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, challengee);
+			ps.setLong(1, challengee);
 			
 			output = ps.executeQuery();
 			

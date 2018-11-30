@@ -5,11 +5,11 @@
 
 package domain.models;
 
+import org.dsrg.soenea.domain.DomainObject;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Card {
-	private int id;
-	private int version;
+public class Card extends DomainObject<Long> {
 	private transient int deckID;
 	private transient int deckPosition;
 	
@@ -19,25 +19,12 @@ public class Card {
 	@SerializedName("n")
 	private String cardName;
 	
-	public Card(int id, int version, int deckID, int deckPosition, char cardType, String cardName) {
-		this.id = id;
-		this.version = version;
+	public Card(long id, long version, int deckID, int deckPosition, char cardType, String cardName) {
+		super(id, version);
 		this.deckID = deckID;
 		this.deckPosition = deckPosition;
 		this.cardType = cardType;
 		this.cardName = cardName;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
 	}
 
 	public int getDeckID() {
@@ -73,7 +60,7 @@ public class Card {
 	}
 	
 	public String valuesAsString() {
-		String output = "(" + id + ", " + version + ", " + deckID + ", " + deckPosition + ", '" + cardType + "', '" + cardName + "')";
+		String output = "(" + getId() + ", " + getVersion() + ", " + deckID + ", " + deckPosition + ", '" + cardType + "', '" + cardName + "')";
 		
 		return output;
 	}

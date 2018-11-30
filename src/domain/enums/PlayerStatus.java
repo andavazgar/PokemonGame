@@ -6,5 +6,5 @@
 package domain.enums;
 
 public enum PlayerStatus {
-	playing, waiting, retired;
+	playing, waiting, retired, notPlaying;
 }

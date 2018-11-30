@@ -5,16 +5,20 @@
 
 package domain.commands.challenge;
 
-import org.dsrg.soenea.domain.MapperException;
+import org.dsrg.soenea.application.servlet.impl.RequestAttributes;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.ValidatorCommand;
-import org.dsrg.soenea.domain.command.validator.source.Source;
 import org.dsrg.soenea.domain.helper.Helper;
 
-public class ChangeStatusCommand extends ValidatorCommand {
+import domain.enums.ChallengeStatus;
+import domain.factories.GameFactory;
+import domain.inputMappers.ChallengeInputMapper;
+import domain.inputMappers.DeckInputMapper;
+import domain.models.Challenge;
+import domain.models.Deck;
+import domain.outputMappers.ChallengeOutputMapper;
 
-	@Source
-	public Object object;
+public class ChangeStatusCommand extends ValidatorCommand {
 	
 	public ChangeStatusCommand(Helper helper) {
 		super(helper);
@@ -22,18 +26,48 @@ public class ChangeStatusCommand extends ValidatorCommand {
 
 	@Override
 	public void process() throws CommandException {
-		try{
-			object = InputMapper.find(fields);
-			throw new CommandException("Message");
-		} catch (MapperException e) {}
+		long userID = (long) helper.getSessionAttribute(RequestAttributes.CURRENT_USER_ID);
+		long challengeID = (long) helper.getRequestAttribute("challenge");
+		String newChallengeStatus = (String) helper.getRequestAttribute("newChallengeStatus");
+		Challenge challenge = ChallengeInputMapper.find(challengeID);
 		
-		try {
-			object = Factory.createNew(field1, field2);			
-		} catch (Exception e) {
-			e.printStackTrace();
-			addNotification(e.getMessage());
-			throw new CommandException(e);
+		if(challenge == null) {
+			throw new CommandException("The challenge provided was not found.");
 		}
+		
+		if(challenge.getChallengee() != userID) {
+			throw new CommandException("You cannot accept someone else's challenge.");
+		}
+		
+		if(challenge.getChallengeStatus() != ChallengeStatus.open) {
+			throw new CommandException("The challenge is not open. Therefore, it cannot be accepted.");
+		}
+		
+		Deck deck = DeckInputMapper.findByUserID(userID);
+		
+		if(deck == null) {
+			throw new CommandException("You need to upload a deck before accepting a challenge.");
+		}
+		
+		challenge.setChallengeeDeck(deck.getId());
+		
+		switch (newChallengeStatus) {
+		case "Accept":
+			challenge.setStatus(ChallengeStatus.accepted);
+			break;
+		case "Refuse":
+			challenge.setStatus(ChallengeStatus.refused);
+			break;
+		case "Withdraw":
+			challenge.setStatus(ChallengeStatus.withdrawn);
+			break;
+		default:
+			throw new CommandException("Invalid challenge status.");
+		}
+		
+		ChallengeOutputMapper.update(challenge);
+		
+		GameFactory.createNew(challenge.getId());
 	}
 
 }

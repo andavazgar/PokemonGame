@@ -6,34 +6,18 @@
 package services;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Source: https://stackoverflow.com/a/10916633
- */
-public abstract class DatabaseManager {
-	private static String url = "jdbc:mysql://localhost:3306/andavazgar?serverTimezone=UTC";
-	private static String driverName = "com.mysql.cj.jdbc.Driver";   
-    private static String username = "andavazgar";   
-    private static String password = "usentist";
-    private static Connection connection;
-    
-    
+import org.dsrg.soenea.service.threadLocal.DbRegistry;
+
+public class DatabaseManager {
     public static Connection getConnection() {
-        try {
-            Class.forName(driverName);
-            
-            try {
-                connection = DriverManager.getConnection(url, username, password);
-            }
-            catch (SQLException ex) {
-                System.out.println("Failed to create the database connection."); 
-            }
-        }
-        catch (ClassNotFoundException ex) {
-            System.out.println("Database driver not found."); 
-        }
+    	Connection connection = null;
+		try {
+			connection = DbRegistry.getDbConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         return connection;
     }
 }

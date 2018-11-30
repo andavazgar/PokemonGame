@@ -15,7 +15,7 @@ import services.finders.CardFinder;
 
 public class CardInputMapper {
 	
-	public static Card find(int cardID) {
+	public static Card find(long cardID) {
 		ResultSet rs = CardFinder.find(cardID);
 		Card output = null;
 		
@@ -45,7 +45,7 @@ public class CardInputMapper {
 		return output;
 	}
 	
-	public static List<Card> findCardsForUserID(int userID) {
+	public static List<Card> findCardsForUserID(long userID) {
 		ResultSet rs = CardFinder.findCardsForUserID(userID);
 		List<Card> output = new ArrayList<>();
 		

@@ -5,35 +5,22 @@
 
 package domain.models;
 
+import org.dsrg.soenea.domain.DomainObject;
+
 import domain.enums.CardStatus;
 
-public class PlayingCard {
-	private int id;
-	private int version;
+public class PlayingCard extends DomainObject<Long> {
 	private int gameID;
 	private int playerID;
 	private int cardID;
 	private int cardStatus;
 	
-	public PlayingCard(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
-		this.id = id;
-		this.version = version;
+	public PlayingCard(long id, long version, int gameID, int playerID, int cardID, int cardStatus) {
+		super(id, version);
 		this.gameID = gameID;
 		this.playerID = playerID;
 		this.cardID = cardID;
 		this.cardStatus = cardStatus;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
 	}
 	
 	public int getGameID() {

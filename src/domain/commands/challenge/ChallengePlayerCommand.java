@@ -5,27 +5,18 @@
 
 package domain.commands.challenge;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dsrg.soenea.domain.MapperException;
+import org.dsrg.soenea.application.servlet.impl.RequestAttributes;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.domain.command.impl.ValidatorCommand;
-import org.dsrg.soenea.domain.command.impl.annotation.SetInRequestAttribute;
-import org.dsrg.soenea.domain.command.validator.source.Source;
 import org.dsrg.soenea.domain.helper.Helper;
-import org.dsrg.soenea.domain.role.IRole;
-import org.dsrg.soenea.domain.role.impl.GuestRole;
-import org.dsrg.soenea.domain.user.IUser;
-import org.dsrg.soenea.domain.user.UserFactory;
-import org.dsrg.soenea.domain.user.mapper.UserInputMapper;
 
-import domain.roles.RegisteredRole;
+import domain.models.Deck;
+import domain.models.User;
+import domain.factories.ChallengeFactory;
+import domain.inputMappers.DeckInputMapper;
+import domain.inputMappers.UserInputMapper;
 
 public class ChallengePlayerCommand extends ValidatorCommand {
-
-	@Source
-	public Object object;
 	
 	public ChallengePlayerCommand(Helper helper) {
 		super(helper);
@@ -33,18 +24,25 @@ public class ChallengePlayerCommand extends ValidatorCommand {
 
 	@Override
 	public void process() throws CommandException {
-		try{
-			object = InputMapper.find(fields);
-			throw new CommandException("Message");
-		} catch (MapperException e) {}
+		long challengerID = (long) helper.getSessionAttribute(RequestAttributes.CURRENT_USER_ID);
+		long challengeeID = (long) helper.getRequestAttribute("player");
 		
-		try {
-			object = Factory.createNew(field1, field2);			
-		} catch (Exception e) {
-			e.printStackTrace();
-			addNotification(e.getMessage());
-			throw new CommandException(e);
+		if(challengerID == challengeeID) {
+			throw new CommandException("You cannot challenge yourself.");
 		}
+		
+		User challengee = UserInputMapper.find(challengeeID);
+		
+		if(challengee == null) {
+			throw new CommandException("Invalid challengee ID.");
+		}
+		
+		Deck deck = DeckInputMapper.findByUserID(challengerID);
+		
+		if(deck == null) {
+			throw new CommandException("You need to upload a deck before issuing a challenge.");
+		}
+		
+		ChallengeFactory.createNew(challengerID, challengeeID, deck.getId());
 	}
-
 }

@@ -5,37 +5,19 @@
 
 package domain.models;
 
-import java.security.MessageDigest;
-import java.util.Base64;
+import org.dsrg.soenea.domain.DomainObject;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
-	private int id;
-	private int version;
-	
+public class User extends DomainObject<Long> {	
 	@SerializedName("user")
 	private String username;
-	
 	private transient String password;
 	
-	public User(int id, int version, String username, String password) {
-		this.id = id;
-		this.version = version;
+	public User(long id, long version, String username, String password) {
+		super(id, version);
 		this.username = username;
-		this.password = hashPassword(password);
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
+		this.password = password;
 	}
 
 	public String getUsername() {
@@ -51,29 +33,6 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = hashPassword(password);
-	}
-	
-	/*
-	 * Source: https://stackoverflow.com/a/5531479
-	 */
-	private static String hashPassword(String password) {
-		if(password.length() == 44) {
-			return password;
-		}
-		else {
-			String hashedPassword = null;
-			
-			try {
-				MessageDigest digest = MessageDigest.getInstance("SHA-256");
-				byte[] hash = digest.digest(password.getBytes());
-				hashedPassword = Base64.getEncoder().encodeToString(hash);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return hashedPassword;
-		}
+		this.password = password;
 	}
 }

@@ -5,20 +5,27 @@
 
 package domain.models;
 
+import org.dsrg.soenea.domain.DomainObject;
+
 import domain.enums.ChallengeStatus;
 
-public class Challenge {
-	private int id;
-	private int version;
-	private int challenger;
-	private int challengee;
-	private int challengerDeck;
-	private int challengeeDeck;
+public class Challenge extends DomainObject<Long> {
+	private long challenger;
+	private long challengee;
+	private long challengerDeck;
+	private long challengeeDeck;
 	private int status;
 	
-	public Challenge(int id, int version, int challenger, int challengee, int challengerDeck, int challengeeDeck, int status) {
-		this.id = id;
-		this.version = version;
+	public Challenge(long id, long version, long challenger, long challengee, long challengeeDeck, int status) {
+		super(id, version);
+		this.challenger = challenger;
+		this.challengee = challengee;
+		this.challengeeDeck = challengeeDeck;
+		this.status = status;
+	}
+	
+	public Challenge(long id, long version, long challenger, long challengee, long challengerDeck, long challengeeDeck, int status) {
+		super(id, version);
 		this.challenger = challenger;
 		this.challengee = challengee;
 		this.challengerDeck = challengerDeck;
@@ -26,47 +33,35 @@ public class Challenge {
 		this.status = status;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	
-	public int getChallenger() {
+	public long getChallenger() {
 		return challenger;
 	}
 	
-	public void setChallenger(int challenger) {
+	public void setChallenger(long challenger) {
 		this.challenger = challenger;
 	}
 	
-	public int getChallengee() {
+	public long getChallengee() {
 		return challengee;
 	}
 	
-	public void setChallengee(int challengee) {
+	public void setChallengee(long challengee) {
 		this.challengee = challengee;
 	}
 	
-	public int getChallengerDeck() {
+	public long getChallengerDeck() {
 		return challengerDeck;
 	}
 
-	public void setChallengerDeck(int challengerDeck) {
+	public void setChallengerDeck(long challengerDeck) {
 		this.challengerDeck = challengerDeck;
 	}
 
-	public int getChallengeeDeck() {
+	public long getChallengeeDeck() {
 		return challengeeDeck;
 	}
 
-	public void setChallengeeDeck(int challengeeDeck) {
+	public void setChallengeeDeck(long challengeeDeck) {
 		this.challengeeDeck = challengeeDeck;
 	}
 

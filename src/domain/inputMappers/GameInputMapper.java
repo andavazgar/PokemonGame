@@ -15,7 +15,7 @@ import services.finders.GameFinder;
 
 public class GameInputMapper {
 	
-	public static Game find(int gameID) {
+	public static Game find(long gameID) {
 		ResultSet rs = GameFinder.find(gameID);
 		Game output = null;
 		

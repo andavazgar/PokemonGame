@@ -13,7 +13,7 @@ import services.finders.DeckFinder;
 
 public class DeckInputMapper {
 	
-	public static Deck find(int id) {
+	public static Deck find(long id) {
 		ResultSet rs = DeckFinder.find(id);
 		Deck output = null;
 		
@@ -28,7 +28,7 @@ public class DeckInputMapper {
 		return output;
 	}
 	
-	public static Deck findByUserID(int userID) {
+	public static Deck findByUserID(long userID) {
 		ResultSet rs = DeckFinder.findByUserID(userID);
 		Deck output = null;
 		

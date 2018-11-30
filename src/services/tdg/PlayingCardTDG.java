@@ -40,15 +40,15 @@ public class PlayingCardTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 	
-	public static int insert(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
+	public static int insert(long id, long version, int gameID, int playerID, int cardID, int cardStatus) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, game_id, player_id, card_id, card_status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
 			ps.setInt(3, gameID);
 			ps.setInt(4, playerID);
 			ps.setInt(5, cardID);
@@ -72,20 +72,20 @@ public class PlayingCardTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int update(int id, int version, int gameID, int playerID, int cardID, int cardStatus) {
+	public static int update(long id, long version, int gameID, int playerID, int cardID, int cardStatus) {
 		String query = "UPDATE " + TABLE_NAME + " SET version = ?, game_id = ?, player_id = ?, card_id = ?, card_status = ? WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, version +1);
+			ps.setLong(1, version +1);
 			ps.setInt(2, gameID);
 			ps.setInt(3, playerID);
 			ps.setInt(4, cardID);
 			ps.setInt(5, cardStatus);
-			ps.setInt(6, id);
-			ps.setInt(7, version);
+			ps.setLong(6, id);
+			ps.setLong(7, version);
 			
 			output = ps.executeUpdate();
 			
@@ -105,14 +105,14 @@ public class PlayingCardTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int delete(int id) {
+	public static int delete(long id) {
 		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeUpdate();
 			

@@ -38,15 +38,15 @@ public class GameTDG extends AbstractTDG {
 		dropTable(TABLE_NAME);
 	}
 	
-	public static int insert(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
+	public static int insert(long id, long version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
 		String query = "INSERT INTO " + TABLE_NAME + " (id, version, challenge_id, challenger_status, challengee_status, game_status) VALUES (?, ?, ?, ?, ?, ?);";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setInt(2, version);
+			ps.setLong(1, id);
+			ps.setLong(2, version);
 			ps.setInt(3, challengeID);
 			ps.setInt(4, challengerStatus);
 			ps.setInt(5, challengeeStatus);
@@ -70,20 +70,20 @@ public class GameTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int update(int id, int version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
+	public static int update(long id, long version, int challengeID, int challengerStatus, int challengeeStatus, int gameStatus) {
 		String query = "UPDATE " + TABLE_NAME + " SET version = ?, challenge_id = ?, challenger_status = ?, challengee_status = ?, game_status WHERE id = ? AND version = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, version +1);
+			ps.setLong(1, version +1);
 			ps.setInt(2, challengeID);
 			ps.setInt(3, challengerStatus);
 			ps.setInt(4, challengeeStatus);
 			ps.setInt(5, gameStatus);
-			ps.setInt(6, id);
-			ps.setInt(7, version);
+			ps.setLong(6, id);
+			ps.setLong(7, version);
 			
 			output = ps.executeUpdate();
 			
@@ -103,14 +103,14 @@ public class GameTDG extends AbstractTDG {
 		return output;
 	}
 	
-	public static int delete(int id) {
+	public static int delete(long id) {
 		String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?;";
 		Connection conn = DatabaseManager.getConnection();
 		int output = 0;
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			
 			output = ps.executeUpdate();
 			
