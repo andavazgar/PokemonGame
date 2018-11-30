@@ -5,6 +5,7 @@
 
 package domain.commands.user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,14 +40,13 @@ public class RegisterCommand extends ValidatorCommand {
 
 	@Override
 	public void process() throws CommandException {
+		try{
+			currentUser = UserInputMapper.find(user);
+			String message = "User already exists!";
+			throw new CommandException(message);
+		} catch (MapperException | SQLException e) {}
+		
 		try {
-			
-			try{
-				currentUser = UserInputMapper.find(user);
-				String message = "User already exists!";
-				throw new CommandException(message);
-			} catch (MapperException e) {}
-			
 			List<IRole> roles = new ArrayList<IRole>();
 			roles.add(new GuestRole());
 			roles.add(new RegisteredRole());

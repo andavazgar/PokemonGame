@@ -3,7 +3,7 @@
  * SOEN 387
  */
 
-package app.dispatcher.challenge;
+package app.dispatcher.decks;
 
 import java.io.IOException;
 
@@ -13,18 +13,18 @@ import org.dsrg.soenea.application.servlet.dispatcher.Dispatcher;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.uow.UoW;
 
-import domain.commands.challenge.ChallengePlayerCommand;
+import domain.commands.decks.ManageDecksCommand;
 
-public class ChallengePlayer extends Dispatcher {
+public class ManageDecks extends Dispatcher {
 
 	@Override
 	public void execute() throws ServletException, IOException {
-		ChallengePlayerCommand c = new ChallengePlayerCommand(myHelper);
+		ManageDecksCommand c = new ManageDecksCommand(myHelper);
 		try {
 			c.execute();
 			try {
 				UoW.getCurrent().commit();
-				myHelper.setRequestAttribute("message", "Challenge has been successfully created");
+				myHelper.setRequestAttribute("message", "");
 				forward("/WEB-INF/jsp/success.jsp");
 			} catch (Exception e) {
 				myHelper.setRequestAttribute("message", e.getMessage());

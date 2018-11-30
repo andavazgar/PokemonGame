@@ -1,38 +1,78 @@
 <permalinks>
     <Permalink>
-        <pattern>Poke/Player/Register</pattern>
+        <pattern>PokemonGame/Player/Register</pattern>
         <dispatcher>app.dispatcher.user.Register</dispatcher>
     </Permalink>
     <Permalink>
-        <pattern>Poke/Player/Login</pattern>
+        <pattern>PokemonGame/Player/Login</pattern>
         <dispatcher>app.dispatcher.user.Login</dispatcher>
     </Permalink>
     <Permalink>
-        <pattern>Poke/Player/Logout</pattern>
+        <pattern>PokemonGame/Player/Logout</pattern>
         <dispatcher>app.dispatcher.user.Logout</dispatcher>
     </Permalink>
     <Permalink>
-        <pattern>Poke/Deck</pattern>
-        <dispatcher>app.dispatcher.deck.ManageDeck</dispatcher>
+        <pattern>PokemonGame/Deck</pattern>
+        <dispatcher>app.dispatcher.decks.ManageDecks</dispatcher>
     </Permalink>
     <Permalink>
-        <pattern>Poke/Deck/(\d+)</pattern>
+        <pattern>PokemonGame/Deck/(\d+)</pattern>
         <dispatcher>app.dispatcher.deck.ViewDeck</dispatcher>
-        <attribute name="deck" />
+        <attribute name="deckID" />
     </Permalink>
     <Permalink>
-        <pattern>Poke/Player</pattern>
-        <dispatcher>app.dispatcher.challenge.ListPlayers</dispatcher>
+        <pattern>PokemonGame/Player</pattern>
+        <dispatcher>app.dispatcher.users.ListPlayers</dispatcher>
     </Permalink>
     <Permalink>
-        <pattern>Poke/Player/(\d+)/Challenge</pattern>
+        <pattern>PokemonGame/Player/(\d+)/Challenge</pattern>
         <dispatcher>app.dispatcher.challenge.ChallengePlayer</dispatcher>
-        <attribute name="challengee" />
+        <attribute name="challengeeID" />
     </Permalink>
     <Permalink>
-        <pattern>Poke/Challenge/(\d+)/(Accept)</pattern>
-        <dispatcher>app.dispatcher.challenge.AcceptChallenge</dispatcher>
-        <attribute name="challenge" />
-        <attribute name="type" />
+        <pattern>PokemonGame/Challenge</pattern>
+        <dispatcher>app.dispatcher.challenges.ListChallenges</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Challenge/(\d+)/(Accept|Withdraw|Refuse)</pattern>
+        <dispatcher>app.dispatcher.challenge.ChangeStatus</dispatcher>
+        <attribute name="challengeID" />
+        <attribute name="newChallengeStatus" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game</pattern>
+        <dispatcher>app.dispatcher.games.ListGames</dispatcher>
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)</pattern>
+        <dispatcher>app.dispatcher.game.ViewBoard</dispatcher>
+        <attribute name="gameID" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)/Hand</pattern>
+        <dispatcher>app.dispatcher.game.ViewHand</dispatcher>
+        <attribute name="gameID" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)/Player/(\d+)/Discard</pattern>
+        <dispatcher>app.dispatcher.game.ViewDiscardPileForPlayer</dispatcher>
+        <attribute name="gameID" />
+        <attribute name="playerID" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)/Hand/(\d+)/Play</pattern>
+        <dispatcher>app.dispatcher.game.PlayCardToBench</dispatcher>
+        <attribute name="gameID" />
+        <attribute name="cardID" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)/EndTurn</pattern>
+        <dispatcher>app.dispatcher.game.EndTurn</dispatcher>
+        <attribute name="gameID" />
+    </Permalink>
+    <Permalink>
+        <pattern>PokemonGame/Game/(\d+)/Retire</pattern>
+        <dispatcher>app.dispatcher.game.Retire</dispatcher>
+        <attribute name="gameID" />
     </Permalink>
 </permalinks>
